@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Control de Alimentador para Peces</title>
 
+    <!-- Diseño de botones y estilo general -->
     <style>
         body {
             display: flex;
@@ -12,111 +13,42 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
-            background-color: #ffffff;
+            margin: 0;
             font-family: Arial, sans-serif;
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
+
+            /* Imagen de fondo */
+            background-image: url('Preparar-una-pecera.jpg'); 
+            background-size: cover; /* Asegura que la imagen cubra todo el fondo */
+            background-repeat: no-repeat; /* Evita que la imagen se repita */
+            background-position: center; /* Centra la imagen */
         }
 
         h1 {
-            color: #2c3e50;
+            color: #fff; /* Color blanco para que contraste con la imagen */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Pa que se vea mejor */
             margin-bottom: 20px;
         }
 
-        button, input {
-            margin: 10px;
-            padding: 12px;
-            font-size: 16px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-        }
-
         button {
-            background-color: #09F;
+            border: 0;
+            background-color: rgba(0, 0, 0, 0.7);
             color: #fff;
+            font-size: 18px;
+            padding: 12px 24px;
             cursor: pointer;
+            border-radius: 8px;
             transition: 0.3s;
+            margin: 10px;
         }
 
         button:hover {
-            background-color: #007BFF;
+            background-color: rgba(255, 255, 255, 0.7);
+            color: #000;
         }
     </style>
-    
-    <script>
-        const accessToken = "d04c8882457ebb803c559b726e0e9814965c6136";
-        const deviceID = "0a10aced202194944a058ae4";
-        const url = `https://api.particle.io/v1/devices/${deviceID}/motor`;
-
-        async function switchOn() {
-            try {
-                const response = await fetch(url, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded",
-                    },
-                    body: `params=on&access_token=${accessToken}`,
-                });
-
-                const data = await response.json();
-                if (data.return_value === 1) {
-                    alert("¡Comedero activado!");
-                } else {
-                    alert("Error: No se pudo activar el comedero.");
-                }
-            } catch (error) {
-                console.error("Error al enviar la solicitud:", error);
-                alert("Hubo un problema al conectar con el dispositivo.");
-            }
-        }
-
-        function programFeed() {
-            const dateInput = document.getElementById('date').value;
-            const timeInput = document.getElementById('time').value;
-
-            if (!dateInput || !timeInput) {
-                alert("Por favor, ingresa una fecha y hora válidas.");
-                return;
-            }
-
-            const feedTime = new Date(`${dateInput}T${timeInput}`);
-            const currentTime = new Date();
-
-            const delay = feedTime - currentTime;
-
-            if (delay < 0) {
-                alert("La fecha y hora deben ser futuras.");
-                return;
-            }
-
-            alert(`Comedero programado para el: ${feedTime}`);
-            setTimeout(switchOn, delay);
-        }
-    </script>
 </head>
 <body>
     <h1>Control de Alimentador para Peces</h1>
-
-    <!-- Botón para alimentar de inmediato -->
-    <button onclick="switchOn()">
-        Alimentar Ahora
-    </button>
-
-    <!-- Formulario para programar alimentación -->
-    <h2>Programar Alimentación</h2>
-    <form onsubmit="event.preventDefault(); programFeed();">
-        <label>
-            Fecha:
-            <input type="date" id="date" required>
-        </label>
-        <br>
-        <label>
-            Hora:
-            <input type="time" id="time" required>
-        </label>
-        <br>
-        <button type="submit">Programar</button>
-    </form>
+    <button onclick="alert('Alimentar ahora')">Alimentar Ahora</button>
 </body>
 </html>
