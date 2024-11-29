@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Alimentador para Peces</title>
+
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #ffffff;
+            font-family: Arial, sans-serif;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        button, input {
+            margin: 10px;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: #09F;
+            color: #fff;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #007BFF;
+        }
+    </style>
+    
+    <script>
+        const accessToken = "d04c8882457ebb803c559b726e0e9814965c6136";
+        const deviceID = "0a10aced202194944a058ae4";
+        const url = `https://api.particle.io/v1/devices/${deviceID}/motor`;
+
+        async function switchOn() {
+            try {
+                const response = await fetch(url, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    body: `params=on&access_token=${accessToken}`,
+                });
+
+                const data = await response.json();
+                if (data.return_value === 1) {
+                    alert("¡Comedero activado!");
+                } else {
+                    alert("Error: No se pudo activar el comedero.");
+                }
+            } catch (error) {
+                console.error("Error al enviar la solicitud:", error);
+                alert("Hubo un problema al conectar con el dispositivo.");
+            }
+        }
+
+        function programFeed() {
+            const dateInput = document.getElementById('date').value;
+            const timeInput = document.getElementById('time').value;
+
+            if (!dateInput || !timeInput) {
+                alert("Por favor, ingresa una fecha y hora válidas.");
+                return;
+            }
+
+            const feedTime = new Date(`${dateInput}T${timeInput}`);
+            const currentTime = new Date();
+
+            const delay = feedTime - currentTime;
+
+            if (delay < 0) {
+                alert("La fecha y hora deben ser futuras.");
+                return;
+            }
+
+            alert(`Comedero programado para el: ${feedTime}`);
+            setTimeout(switchOn, delay);
+        }
+    </script>
+</head>
+<body>
+    <h1>Control de Alimentador para Peces</h1>
+
+    <!-- Botón para alimentar de inmediato -->
+    <button onclick="switchOn()">
+        Alimentar Ahora
+    </button>
+
+    <!-- Formulario para programar alimentación -->
+    <h2>Programar Alimentación</h2>
+    <form onsubmit="event.preventDefault(); programFeed();">
+        <label>
+            Fecha:
+            <input type="date" id="date" required>
+        </label>
+        <br>
+        <label>
+            Hora:
+            <input type="time" id="time" required>
+        </label>
+        <br>
+        <button type="submit">Programar</button>
+    </form>
+</body>
+</html>
