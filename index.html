@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Control de Alimentador para Peces</title>
 
-    <!-- Diseño de botones y formulario -->
+    <!-- Diseño de la página -->
     <style>
         body {
             display: flex;
@@ -13,35 +13,84 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
-            background-color: #ffffff;
-            font-family: Arial, sans-serif;
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
+            margin: 0;
+            background: linear-gradient(135deg, #74b9ff, #00cec9);
+            font-family: 'Roboto', Arial, sans-serif;
+            color: #2d3436;
         }
 
         h1 {
-            color: #2c3e50;
+            font-size: 2.5rem;
+            color: #ffffff;
             margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            color: #ffffff;
+            margin-top: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        form {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 20px 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            text-align: center;
         }
 
         button, input {
-            margin: 10px;
-            padding: 12px;
+            display: block;
+            margin: 10px auto;
+            padding: 10px 15px;
             font-size: 16px;
             border-radius: 8px;
-            border: 1px solid #ccc;
+            border: none;
+            width: 100%;
+            max-width: 300px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         button {
-            background-color: #09F;
-            color: #fff;
+            background: #0984e3;
+            color: #ffffff;
+            font-weight: bold;
             cursor: pointer;
-            transition: 0.3s;
+            transition: background 0.3s ease;
         }
 
         button:hover {
-            background-color: #007BFF;
+            background: #74b9ff;
+        }
+
+        input {
+            border: 1px solid #dfe6e9;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #74b9ff;
+            box-shadow: 0 0 4px rgba(116, 185, 255, 0.8);
+        }
+
+        label {
+            font-size: 1rem;
+            display: block;
+            margin-bottom: 5px;
+            text-align: left;
+            color: #2d3436;
+        }
+
+        .action-button {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .action-button button {
+            margin-top: 10px;
         }
     </style>
     
@@ -99,22 +148,20 @@
 <body>
     <h1>Control de Alimentador para Peces</h1>
 
-    <!-- Botón para alimentar de inmediato -->
-    <button onclick="switchOn()">Alimentar Ahora</button>
+    <div class="action-button">
+        <!-- Botón para alimentar de inmediato -->
+        <button onclick="switchOn()">Alimentar Ahora</button>
+    </div>
 
     <!-- Formulario para programar alimentación -->
     <h2>Programar Alimentación</h2>
     <form onsubmit="event.preventDefault(); programFeed();">
-        <label>
-            Fecha:
-            <input type="date" id="date" required>
-        </label>
-        <br>
-        <label>
-            Hora:
-            <input type="time" id="time" required>
-        </label>
-        <br>
+        <label for="date">Fecha:</label>
+        <input type="date" id="date" required>
+        
+        <label for="time">Hora:</label>
+        <input type="time" id="time" required>
+        
         <button type="submit">Programar</button>
     </form>
 </body>
