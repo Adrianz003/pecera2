@@ -84,33 +84,33 @@
             color: #2d3436;
         }
 
-        .action-button {
+        .boton-accion {
             margin-top: 20px;
             text-align: center;
         }
 
-        .action-button button {
+        .boton-accion button {
             margin-top: 10px;
         }
     </style>
     
     <script>
-        const accessToken = "d04c8882457ebb803c559b726e0e9814965c6136";
-        const deviceID = "0a10aced202194944a058ae4";
-        const url = `https://api.particle.io/v1/devices/${deviceID}/motor`;
+        const tokenDeAcceso = "d04c8882457ebb803c559b726e0e9814965c6136";
+        const idDispositivo = "0a10aced202194944a058ae4";
+        const urlDispositivo = `https://api.particle.io/v1/devices/${idDispositivo}/motor`;
 
-        async function switchOn() {
+        async function encenderComedero() {
             try {
-                const response = await fetch(url, {
+                const respuesta = await fetch(urlDispositivo, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/x-www-form-urlencoded",
                     },
-                    body: `params=on&access_token=${accessToken}`,
+                    body: `params=on&access_token=${tokenDeAcceso}`,
                 });
 
-                const data = await response.json();
-                if (data.return_value === 1) {
+                const datos = await respuesta.json();
+                if (datos.return_value === 1) {
                     alert("¡Comedero activado!");
                 } else {
                     alert("Error: No se pudo activar el comedero.");
@@ -121,46 +121,46 @@
             }
         }
 
-        function programFeed() {
-            const dateInput = document.getElementById('date').value;
-            const timeInput = document.getElementById('time').value;
+        function programarAlimentacion() {
+            const fechaIngresada = document.getElementById('fecha').value;
+            const horaIngresada = document.getElementById('hora').value;
 
-            if (!dateInput || !timeInput) {
+            if (!fechaIngresada || !horaIngresada) {
                 alert("Por favor, ingresa una fecha y hora válidas.");
                 return;
             }
 
-            const feedTime = new Date(`${dateInput}T${timeInput}`);
-            const currentTime = new Date();
+            const horaProgramada = new Date(`${fechaIngresada}T${horaIngresada}`);
+            const horaActual = new Date();
 
-            const delay = feedTime - currentTime;
+            const retraso = horaProgramada - horaActual;
 
-            if (delay < 0) {
+            if (retraso < 0) {
                 alert("La fecha y hora deben ser futuras.");
                 return;
             }
 
-            alert(`Comedero programado para el: ${feedTime}`);
-            setTimeout(switchOn, delay);
+            alert(`Comedero programado para el: ${horaProgramada}`);
+            setTimeout(encenderComedero, retraso);
         }
     </script>
 </head>
 <body>
     <h1>Control de Alimentador para Peces</h1>
 
-    <div class="action-button">
+    <div class="boton-accion">
         <!-- Botón para alimentar de inmediato -->
-        <button onclick="switchOn()">Alimentar Ahora</button>
+        <button onclick="encenderComedero()">Alimentar Ahora</button>
     </div>
 
     <!-- Formulario para programar alimentación -->
     <h2>Programar Alimentación</h2>
-    <form onsubmit="event.preventDefault(); programFeed();">
-        <label for="date">Fecha:</label>
-        <input type="date" id="date" required>
+    <form onsubmit="event.preventDefault(); programarAlimentacion();">
+        <label for="fecha">Fecha:</label>
+        <input type="date" id="fecha" required>
         
-        <label for="time">Hora:</label>
-        <input type="time" id="time" required>
+        <label for="hora">Hora:</label>
+        <input type="time" id="hora" required>
         
         <button type="submit">Programar</button>
     </form>
